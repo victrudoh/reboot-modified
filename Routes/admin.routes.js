@@ -67,19 +67,25 @@ router.get("/createUser", authorize("admin"), adminController.getCreateUserContr
 router.post("/createUser", authorize("admin"), adminController.postCreateUserController);
 
 // categories
-
 router.get("/categories", authorize("admin"), adminController.getCategoriesController);
-
-router.get("/sub_cats", authorize("admin"), adminController.getSubCategoriesController);
 
 router.get("/createCategory", authorize("admin"), adminController.getCreateCategoryController);
 
 router.post("/createCategory", adminController.postCreateCategoryController);
 
+router.get("/editCategory", authorize("admin"), adminController.getEditCategoryController);
+
+router.post("/editCategory", adminController.postEditCategoryController);
+
 // sub categories
+router.get("/sub_cats", authorize("admin"), adminController.getSubCategoriesController);
+
 router.get("/createSubCategory", authorize("admin"), adminController.getCreateSubCategoryController);
 
 router.post("/createSubCategory", adminController.postCreateSubCategoryController);
 
+router.get("/editSubCategory", authorize("admin"), adminController.getEditSubCategoryController);
+
+router.post("/editSubCategory", adminController.postEditSubCategoryController);
 
 module.exports = router;

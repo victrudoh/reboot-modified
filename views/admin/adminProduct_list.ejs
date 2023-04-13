@@ -9,21 +9,21 @@
                         <form action="/admin/productsSort" method="POST">
                             <label for="category" class="mt-2 mx-2">Sort by:</label>
                             <select name="category" id="category" class="mb-3" required>
-          <option>Choose category</option>
-          <% categories.map((category) => { %>
-            <option value="<%= category.category %>"><%= category.category %></option>
-          <% }) %>
-        </select>
+                            <option>Choose category</option>
+                            <% categories.map((category) => { %>
+                                <option value="<%= category.category %>"><%= category.category %></option>
+                            <% }) %>
+                            </select>
                             <button type="submit" class="btn btn-outline-secondary my-1">Sort</button>
                         </form>
                         <form action="/admin/productsSubCatSort" method="POST">
                             <label for="category" class="mt-2 mx-2">Sort by Sub Category: </label>
                             <select name="sub_cat" id="sub_cat" class="mb-3" required>
-           <option>Choose Sub Category</option>
-            <% sub_cats.map((sub_cat) => { %>
-              <option value="<%= sub_cat.sub_cat %>"><%= sub_cat.sub_cat %></option>
-            <% }) %>
-        </select>
+                            <option>Choose Sub Category</option>
+                                <% sub_cats.map((sub_cat) => { %>
+                                <option value="<%= sub_cat.sub_cat %>"><%= sub_cat.sub_cat %></option>
+                                <% }) %>
+                            </select>
                             <button type="submit" class="btn btn-outline-secondary my-1">Sort</button>
                         </form>
                     </div>

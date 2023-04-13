@@ -31,7 +31,7 @@
                                     </td>
                                     <td>
                                         <div class="pair ">
-                                            <a href="/admin/sub_cats?id=<%=item._id%>">Edit Category</a>
+                                            <a href="/admin/editCategory?id=<%=item._id%>">Edit Category</a>
                                             <a href="/admin/sub_cats?id=<%=item._id%>">View Sub Categories</a>
                                         </div>
                                     </td>
@@ -42,8 +42,8 @@
 
                     </table>
                     <% } else { %>
-                        <h1>No Disabled Product</h1>
-                        <a href="/admin/dashboard" class="btn btn-outline-secondary">Back</a>
+                        <h1>No Category</h1>
+                        <!-- <a href="/admin/dashboard" class="btn btn-outline-secondary">Back</a> -->
                         <% } %>
         </main>
     </div>

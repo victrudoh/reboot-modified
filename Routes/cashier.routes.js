@@ -26,11 +26,13 @@ router.get("/confirmedOrders", authorize("cashier"), cashierController.getConfir
 
 router.get("/findOrders", authorize("cashier"), cashierController.getFindOrderController);
 
-router.get("/products", authorize("cashier"),  cashierController.getProductController);
+router.get("/products", authorize("cashier"), cashierController.getProductController);
 
-router.post("/productsSort",  authorize('cashier'), cashierController.postSortProductsController);
+router.post("/productsSort", authorize('cashier'), cashierController.postSortProductsController);
 
-router.get("/products/:productId",  authorize('cashier'), cashierController.getProductByIdController);
+router.post("/productsSubCatSort", authorize('cashier'), cashierController.postSortProductsBySubCatController);
+
+router.get("/products/:productId", authorize('cashier'), cashierController.getProductByIdController);
 
 router.get("/add_product", isAuthenticated, authorize('cashier'), cashierController.getAddProductController);
 

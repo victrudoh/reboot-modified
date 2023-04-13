@@ -6,7 +6,7 @@
 
             <hr>
             <a href="/admin/categories" class="btn btn-outline-dark ">Back</a>
-            <a href="/admin/createCategory" class="btn 
+            <a href="/admin/createSubCategory?categoryId=<%= categoryId %>" class="btn 
       btn-outline-secondary float-end">Add Sub Category</a>
 
             <% let sn = 0 %>
@@ -32,7 +32,7 @@
                                     </td>
                                     <td>
                                         <div class="pair">
-                                            <a href="/admin/sub_cats?id=<%=item._id%>">Edit Sub Category</a>
+                                            <a href="/admin/editSubCategory?sub_catId=<%=item._id%>&categoryId=<%= categoryId%>">Edit Sub Category</a>
                                         </div>
                                     </td>
                                 </tr>
@@ -42,8 +42,8 @@
 
                     </table>
                     <% } else { %>
-                        <h1>No Disabled Product</h1>
-                        <a href="/admin/dashboard" class="btn btn-outline-secondary">Back</a>
+                        <h1 class="my-5">No Sub Category</h1>
+                        <!-- <a href="/admin/categories" class="btn btn-outline-secondary">Back</a> -->
                         <% } %>
         </main>
     </div>

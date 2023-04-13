@@ -640,22 +640,6 @@ module.exports = {
         });
     },
 
-    // get categories 
-    getSubCategoriesController: async(req, res, next) => {
-
-        const { id } = req.query;
-
-        const sub_cats = await sub_catModel.find({ categoryId: id });
-
-        res.render("admin/sub_cats", {
-            pageTitle: "Subcategories",
-            path: "dashboard",
-            editing: false,
-            role: req.user.role,
-            sub_cats,
-        });
-    },
-
     // get create category
     getCreateCategoryController: async(req, res) => {
         let message = req.flash("error");
@@ -678,19 +662,95 @@ module.exports = {
     postCreateCategoryController: async(req, res) => {
         try {
             const { category } = req.body;
-            console.log("🚀 ~ file: admin.controller.js:578 ~ postCreateCategoryController:async ~ req.body:", req.body)
+            const categorySmall = category.toLowerCase();
+
+            // check for match
+            const fetchCategory = await categoryModel.findOne({ category: categorySmall })
+            if (fetchCategory) {
+                return res.status(400).send("Category already exists")
+            }
 
             const newCategory = new categoryModel({
-                category
+                categorySmall
             })
             await newCategory.save();
             console.log("🚀 ~ file: admin.controller.js:582 ~ postCreateCategoryController:async ~ newCategory:", newCategory)
 
             res.redirect("/admin/categories");
         } catch (error) {
+            console.log("🚀 ~ file: admin.controller.js:698 ~ postCreateCategoryController:async ~ error:", error)
             return res.status(400).send("Couldn't create category")
         }
     },
+
+    // get Edit category
+    getEditCategoryController: async(req, res) => {
+        let message = req.flash("error");
+        //so the error message box will not always be active
+        if (message.length > 0) {
+            message = message[0];
+        } else {
+            message = null;
+        }
+
+        const { id } = req.query;
+
+        // check for match
+        const category = await categoryModel.findOne({ _id: id })
+
+        res.render("admin/edit_category", {
+            pageTitle: "Edit Category",
+            path: "dashboard",
+            errorMessage: message,
+            role: null,
+            category,
+        });
+    },
+
+    // post Edit category
+    postEditCategoryController: async(req, res) => {
+        try {
+            const { category } = req.body;
+            const categorySmall = category.toLowerCase();
+
+            const { categoryId } = req.query;
+            console.log("🚀 ~ file: admin.controller.js:717 ~ postEditCategoryController:async ~ categoryId:", categoryId)
+
+            // check for match
+            const getCategory = await categoryModel.findOne({ _id: categoryId })
+
+            if (!getCategory) {
+                return res.status(400).send("Category does not exist")
+            }
+
+            getCategory.category = categorySmall;
+            await getCategory.save();
+            console.log("🚀 ~ file: admin.controller.js:727 ~ postEditCategoryController:async ~ getCategory:", getCategory)
+
+            res.redirect("/admin/categories");
+        } catch (error) {
+            console.log("🚀 ~ file: admin.controller.js:698 ~ postCreateCategoryController:async ~ error:", error)
+            return res.status(400).send("Couldn't create category")
+        }
+    },
+
+    // get sub categories 
+    getSubCategoriesController: async(req, res, next) => {
+
+        const { id } = req.query;
+
+        const sub_cats = await sub_catModel.find({ categoryId: id });
+
+        res.render("admin/sub_cats", {
+            pageTitle: "Subcategories",
+            path: "dashboard",
+            editing: false,
+            role: req.user.role,
+            sub_cats,
+            categoryId: id,
+        });
+    },
+
 
     // get create sub category
     getCreateSubCategoryController: async(req, res) => {
@@ -701,11 +761,14 @@ module.exports = {
         } else {
             message = null;
         }
-        res.render("admin/createSubCategory", {
+
+        const { categoryId } = req.query;
+        res.render("admin/add_sub_cat", {
             pageTitle: "Create Sub Category",
-            path: "createSubCategory",
+            path: "dashboard",
             errorMessage: message,
             role: null,
+            categoryId,
         });
     },
 
@@ -714,19 +777,81 @@ module.exports = {
         try {
             const { sub_cat } = req.body;
             const { categoryId } = req.query;
+            console.log("categoryId:", categoryId)
+            const sub_catSmall = sub_cat.toLowerCase();
+
+            // check for match
+            const fetchSubCategory = await sub_catModel.findOne({ sub_cat: sub_catSmall, categoryId: categoryId })
+            if (fetchSubCategory) {
+                return res.status(400).send("Sub Category already exists")
+            }
 
             const subCategory = new sub_catModel({
-                categoryId,
-                sub_cat
+                categoryId: categoryId,
+                sub_cat: sub_catSmall
             })
             await subCategory.save();
             console.log("🚀 ~ file: admin.controller.js:582 ~ postCreateCategoryController:async ~ subCategory:", subCategory)
 
             res.redirect("/admin/categories");
         } catch (error) {
+            console.log("🚀 ~ file: admin.controller.js:743 ~ postCreateSubCategoryController:async ~ error:", error)
             return res.status(400).send("Couldn't create sub category")
         }
     },
 
+
+    // get Edit Sub category
+    getEditSubCategoryController: async(req, res) => {
+        let message = req.flash("error");
+        //so the error message box will not always be active
+        if (message.length > 0) {
+            message = message[0];
+        } else {
+            message = null;
+        }
+
+        const { categoryId, sub_catId } = req.query;
+        console.log("req.query:", req.query)
+
+        // check for match
+        const sub_cat = await sub_catModel.findOne({ _id: sub_catId })
+
+        res.render("admin/edit_sub_cat", {
+            pageTitle: "Edit Category",
+            path: "dashboard",
+            errorMessage: message,
+            role: null,
+            categoryId,
+            sub_cat,
+        });
+    },
+
+    // post Edit Sub category
+    postEditSubCategoryController: async(req, res) => {
+        try {
+            const { sub_cat } = req.body;
+            console.log("req.body: ", req.body)
+            const sub_catSmall = sub_cat.toLowerCase();
+
+            const { categoryId, sub_catId } = req.query;
+
+            // check for match
+            const getSubCategory = await sub_catModel.findOne({ _id: sub_catId })
+            console.log("getSubCategory: ", getSubCategory)
+
+            if (!getSubCategory) {
+                return res.status(400).send("Sub Category does not exist")
+            }
+
+            getSubCategory.sub_Cat = sub_catSmall;
+            await getSubCategory.save();
+
+            res.redirect("/admin/categories");
+        } catch (error) {
+            console.log("🚀 ~ file: admin.controller.js:852 ~ postEditSubCategoryController:async ~ error:", error)
+            return res.status(400).send("Couldn't create category")
+        }
+    },
 
 };
