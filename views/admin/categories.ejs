@@ -1,0 +1,51 @@
+<%- include('../partials/header.ejs') %>
+
+    <div class="container" style="height: 78vh; margin-bottom: 90px;">
+        <main>
+            <h1 class="cardTitle fw-bolder">CATEGORIES</h1>
+
+            <hr>
+            <a href="/admin/dashboard" class="btn btn-outline-dark ">Back</a>
+            <a href=" /admin/createCategory " class="btn btn-outline-secondary float-end ">Add Category</a>
+
+            <% let sn = 0 %>
+
+                <% if (categories.length > 0) { %>
+                    <table class="table table-striped text-center ">
+                        <thead>
+                            <tr>
+                                <th scope="col ">#</th>
+                                <th scope="col ">Category</th>
+                                <th scope="col ">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% categories.map((item) => { %>
+
+                                <tr>
+                                    <th scope="row ">
+                                        <%= sn = sn + 1 %>
+                                    </th>
+                                    <td>
+                                        <%= item.category %>
+                                    </td>
+                                    <td>
+                                        <div class="pair ">
+                                            <a href="/admin/sub_cats?id=<%=item._id%>">Edit Category</a>
+                                            <a href="/admin/sub_cats?id=<%=item._id%>">View Sub Categories</a>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                <% }) %>
+                        </tbody>
+
+                    </table>
+                    <% } else { %>
+                        <h1>No Disabled Product</h1>
+                        <a href="/admin/dashboard" class="btn btn-outline-secondary">Back</a>
+                        <% } %>
+        </main>
+    </div>
+
+    <%- include('../partials/footer.ejs') %>

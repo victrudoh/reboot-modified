@@ -1,0 +1,65 @@
+<%- include('../partials/header.ejs') %>
+
+    <nav id="login">
+        <div class="card">
+            <h1>Add Product</h1>
+            <form class="" action="/admin/add_product" method="POST" enctype="multipart/form-data">
+                <div>
+                    <label for="brand">Brand</label>
+                    <input type="text" name="brand" id="brand" required />
+                </div>
+                <div>
+                    <label for="media">Media</label>
+                    <input type="file" name="media" id="media" required />
+                </div>
+                <div>
+                    <label for="cost_price">Cost Price</label>
+                    <input type="number" name="cost_price" id="cost_price" step="0.01" required />
+                </div>
+                <div>
+                    <label for="selling_price">Selling Price</label>
+                    <input type="number" name="selling_price" id="selling_price" step="0.01" required />
+                </div>
+                <div>
+                    <label for="category" class="mt-2">Category</label>
+                    <select name="category" id="category" class="w-100" style="height: 45px; border-radius: 5px" required>
+                    <option>Choose category</option>
+                    <% categories.map((category) => { %>
+                      <option value="<%= category._id %>"><%= category.category %></option>
+                    <% }) %>
+                  </select>
+                </div>
+                <div>
+                    <label for="sub_cat" class="mt-2">Sub Category</label>
+                    <select name="sub_cat" id="sub_cat" class="w-100" style="height: 45px; border-radius: 5px" required>
+                    <option>Choose Sub Category</option>
+                    <% sub_cats.map((sub_cat) => { %>
+                      <option value="<%= sub_cat._id %>"><%= sub_cat.sub_cat %></option>
+                    <% }) %>
+                    </select>
+                </div>
+                <div>
+                    <label for="size" class="mt-2">size</label>
+                    <select name="size" id="size" class="w-100" style="height: 45px; border-radius: 5px" required>
+          <option>Choose Size</option>
+          <option value="small">small</option>
+          <option value="medium">medium</option>
+          <option value="large">large</option>
+          <option value="XL">XL</option>
+        </select>
+                </div>
+                <div>
+                    <label for="qty">Quantity</label>
+                    <input type="number" name="qty" id="qty" step="1" required />
+                </div>
+                <div>
+                    <label for="description">Description</label>
+                    <textarea name="description" id="description" rows="5" class="w-100" required></textarea>
+                </div>
+                <button type="submit" class="btn btn-outline-warning">Add Product</button>
+                <a href="/admin/products" class="btn btn-outline-secondary">Back</a>
+            </form>
+        </div>
+    </nav>
+
+    <%- include('../partials/footer.ejs') %>

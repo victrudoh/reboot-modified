@@ -1,0 +1,32 @@
+postOrderController: async (req, res, next) => {
+    // if (req.user.isCartEmpty) {
+    //   return res.redirect('/cart');
+    // }
+    const user = await req.user.populate("cart.items.productId");
+    const products = user.cart.items.map( async (i) => {
+      const qtyOrdered = i.quantity;
+      const prodOrdered = i.productId._id;
+      const prod = await Product.findById(prodOrdered);
+      prod.inStock = prod.inStock - qtyOrdered;
+      if (prod.inStock <= 0) {
+        const productState = prod.isDisabled;
+        prod.isDisabled = !productState;
+      } 
+      await prod.save();
+      console.log(prod.inStock);
+      return { quantity: i.quantity, product: { ...i.productId._doc } };
+    });
+    const newOrder = new Order({
+      user: {
+        name: req.user.username,
+        email: req.user.email,
+      },
+      userId: req.user._id,
+      products: products,
+    });
+
+    const order = await newOrder.save();
+    isCartEmpty = true;
+    await req.user.clearCart();
+    res.redirect(`/checkout/${order.id}`);
+  },

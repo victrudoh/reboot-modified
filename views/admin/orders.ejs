@@ -1,0 +1,79 @@
+<%- include('../partials/header.ejs') %>
+
+<main>
+
+  <div class="">
+    <form action="/admin/orders" method="POST">
+        <label for="date" class="mt-2">Sort by date:</label> <br>
+        From: <input type="date" name="date1" id="date">
+        To: <input type="date" name="date2" id="date">
+        <button type="submit" class="btn btn-outline-secondary my-1">Sort</button>
+      <div class="">
+        <a href="/admin/ordersPayment" class="btn btn-outline-secondary mx-2">Sort by Payment type</a>
+        <a href="/admin/ordersByCashier" class="btn btn-outline-secondary">Sort by Cashier</a>
+      </div>
+    </form>
+  </div>
+  <br />
+  <% if (orders.length <= 0) { %>
+  <h1>Nothing there!</h1>
+  <% } else { %>
+  <ul class="orders">
+    <% totalPrice = 0 %>
+    <% totalSales = 0 %>
+    <% totalIncome = 0 %>
+    <% outstanding = 0 %>
+    <% orders.forEach(order => { %>
+    <li class="orders__item">
+      <div class="spaceBetween">
+        <h1>Order - # <%= order._id %></h1>
+        <%= order.createdAt %>
+      </div>
+      <ul class="orders__products">
+        <% order.products.forEach(p => { %>
+        <li class="orders__products-item">
+          <%= p.product.title %> (<%= p.quantity %>)
+          <h3>₦<%= p.product.price %></h3>
+          <% itemTotalPrice = p.product.price * p.quantity %> 
+          <% totalPrice = totalPrice + itemTotalPrice %>
+        </li>
+        <% }); %>
+        <div class="spaceBetween">
+          Payment type: <%= order.paymentOption %>
+          <div>Ordered by: <%= order.user.name %></div>
+          <div><% if (!order.paid) { %>
+            <h4 style="color: red;">Payment Status: Pending</h4>
+            <% } else { %>
+            <h3 style="color: green;">Payment Confirmed by <%= order.cashier.username %></h3>
+            <% } %></div>
+        </div>
+        <div class="spaceBetween">
+          <h3>Total Price: ₦<%= totalPrice %></h3>
+          <% (order.paid) ? totalIncome = totalIncome + totalPrice : totalIncome = totalIncome %>
+          <% totalSales = totalSales + totalPrice %>
+          <!-- <a href="/invoice/<%= order._id %>" class="btn btn-outline-secondary">Generate invoice</a> -->
+          <a href="/receipt/<%= order._id %>" class="btn btn-outline-secondary">Generate receipt</a>
+        </div>
+        <% totalPrice = 0 %>
+      </ul>
+    </li>
+    <% }); %>
+  </ul>
+  <% } %>
+
+  <% outstanding = totalSales - totalIncome %>
+
+  <h2 style="text-align: center; color: white; display: flex; justify-content:space-evenly;" class="fixed-bottom bg-secondary text-center">
+    <div>Total Sales: ₦<%= totalSales %></div>
+    <div style="color: rgb(0, 255, 0);">Total Income: ₦<%= totalIncome %></div>
+    <div style="color: rgb(226, 3, 3);">Outstanding: ₦<%= outstanding %></div>
+  </h2>
+  <% totalSales = 0 %>
+  <% outstanding = 0 %>
+
+</main>
+
+
+
+
+<%- include('../partials/footer.ejs') %>

@@ -1,0 +1,66 @@
+postUploadExcelController: async (req, res, next) => {
+  const active = req.session.user._id;
+  const admin = await User.findOne({ role: "admin", _id: active });
+
+  let path;
+  if (
+    req.file.mimetype ===
+    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+  ) {
+    console.log("Excel file...");
+    path = req.file.filename;
+    let filePath = req.file.filename;
+    let readExcelFile = xlsx.readFile(filePath);
+    let sheetName = readExcelFile.SheetNames[0];
+    let sheetValue = readExcelFile.Sheets[sheetName];
+    let convertToJSON = xlsx.utils.sheet_to_json(sheetValue);
+    // console.log("convertToJSON", convertToJSON);
+    convertToJSON.map(async (update) => {
+      const updatedTitle = update.title;
+      const updatedMedia = update.media;
+      const updatedPrice = update.price;
+      const updatedCategory = update.category;
+      const updatedInStock = update.inStock;
+      const updatedDescription = update.description;
+
+      const product = await Product.find({
+        title: updatedTitle,
+        category: updatedCategory,
+      });
+      if (product === null) {
+        const newProd = await new Product({
+          title: updatedTitle,
+          media: updatedMedia,
+          price: updatedPrice,
+          category: updatedCategory,
+          inStock: updatedInStock,
+          description: updatedDescription,
+          userId: admin,
+        });
+        await newProd.save();
+        console.log("saved new product: ", newProd.title);
+      }
+      product.title = updatedTitle;
+      product.media = updatedMedia;
+      product.price = updatedPrice;
+      product.category = updatedCategory;
+      product.inStock = updatedInStock;
+      product.description = updatedDescription;
+
+      await product.save();
+
+      console.log("Updated Product");
+      return res.redirect("/admin/products");
+    });
+  } else {
+    console.log("Not excel file...");
+    res.redirect("/admin/products");
+  }
+
+  // res.render("admin/test", {
+  //   pageTitle: "",
+  //   path: "dashboard",
+  //   role: req.user.role,
+  //   path,
+  // });
+};

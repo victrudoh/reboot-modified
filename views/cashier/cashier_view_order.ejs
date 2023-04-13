@@ -1,0 +1,47 @@
+<%- include('../partials/header.ejs') %>
+
+<main style="height: 78vh;"">
+  
+<h3 style="text-align: center" class="my-3">Order by <%= order.user.name %></h3>
+
+<div class="my-3 mx-5" style="margin: 13px">
+  <form action="/cashier/viewOrder" method="post">
+    <ul class="orders">
+      <% totalPrice = 0 %>
+      <li class="orders__item">
+        <div class="spaceBetween">
+          <h1>Order - # <%= order._id %></h1>
+          <%= order.createdAt %>
+        </div>
+        <ul class="orders__products">
+          <% order.products.forEach(p => { %>
+          <li class="orders__products-item">
+            <%= p.product.title %> (<%= p.quantity %>)
+            <h3>₦<%= p.product.price %></h3>
+            <% itemTotalPrice = p.product.price * p.quantity %> <% totalPrice =
+            totalPrice + itemTotalPrice %>
+          </li>
+          <% }); %> Payment Option: <%= order.paymentOption %>
+          <div class="spaceBetween">
+            <h3>Total Price: ₦<%= totalPrice %></h3>
+            <input type="hidden" value="<%= order._id %>" name="orderId">
+            <% if (!order.paid) { %>
+              <h3 style="color: red;">Payment Status: Pending
+              <button type="submit" class="btn btn-outline-secondary my-1">Paid</button>
+              </h3>
+            <% } else { %>
+            <h3 style="color: green;">Payment Confirmed by <%= order.cashier.username %>
+            <!-- <button type="submit" class="btn btn-outline-danger my-1">Revert</button> -->
+            </h3>
+            <% } %>
+          </div>
+          <% totalPrice = 0 %>
+        </ul>
+      </li>
+    </ul>
+  </form>
+  <a href="/cashier/dashboard" class="btn btn-outline-secondary mx-2">Back</a>
+</div>
+</main>
+
+<%- include('../partials/footer.ejs') %>

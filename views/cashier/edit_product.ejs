@@ -1,0 +1,54 @@
+<%- include('../partials/header.ejs') %>
+
+<nav id="login">
+  <div class="card">
+
+    <% let filename %>
+    <% product.media ? filename = `/images/${product.media.filename}` : filename = product.mediaURL %>
+
+    <h1><% if (editing) { %> Edit <% } else { %> Add <% } %> Product</h1>
+        <form class="" action="/cashier/<% if (editing) { %>edit_product<% } else { %>add_product<% } %>" method="POST" enctype="multipart/form-data">
+        <div>
+            <label for="title">Title</label>
+            <input type="text" name="title" id="title" value="<% if (editing) { %><%= product.title %><% } %>">
+        </div>
+        <div>
+            <label for="media">Media</label>
+            <input type="file" name="media" id="media" value="<% if (editing) { %><%= filename %><% } %>">
+        </div>
+        <div>
+            <label for="price">Price</label>
+            <input type="number" name="price" id="price" step="0.01" value="<% if (editing) { %><%= product.price %><% } %>">
+        </div>
+        <div>
+            <label for="category" class="mt-2">Category</label>
+            <select name="category" id="category" class="w-100" style="height: 45px; border-radius: 5px;" required>
+                <option value="<% if (editing) { %><%= product.category %><% } %>"><% if (editing) { %><%= product.category %><% } else { %>Choose category <% } %></option>
+                <option value="groceries">Groceries</option>
+                <option value="utensils">Utensils</option>
+                <option value="medical">Medical</option>
+                <option value="lifestyle">Lifestyle</option>
+                <option value="toiletries">Toiletries</option>
+            </select>
+        </div>
+        <div>
+            <label for="inStock">in Stock</label>
+            <input type="number" name="inStock" id="inStock" step="1" value="<% if (editing) { %><%= product.inStock %><% } %>">
+        </div>
+        <div>
+            <label for="description">Description</label>
+            <textarea name="description" id="description" rows="5" class="w-100"><% if (editing) { %><%= product.description %><% } %></textarea>
+        </div>
+
+        <% if (editing) { %>
+            <input type="hidden" value="<%= product.id %>" name="productId">
+        <% } %>
+
+      <button type="submit" class="btn btn-outline-warning"><% if (editing) { %>Update Product<% } else { %>Add Product<% } %></button>
+      <a href="/cashier/products" class="btn btn-outline-secondary">Back</a>
+    </form>
+    
+  </div>
+</nav>
+
+<%- include('../partials/footer.ejs') %>

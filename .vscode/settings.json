@@ -1,0 +1,17 @@
+{
+    "prettier.requireConfig": false,
+    "javascript.format.enable": true,
+    "eslint.format.enable": true,
+    "notebook.formatOnSave.enabled": true,
+    "editor.defaultFormatter": null,
+    "html.format.enable": true,
+    "json.format.enable": true,
+    "css.format.enable": true,
+    "typescript.format.enable": true,
+    "less.format.enable": true,
+    "yaml.format.enable": true,
+    "dart.enableSdkFormatter": true,
+    "docker.languageserver.formatter.ignoreMultilineInstructions": false,
+    "editor.formatOnPaste": true,
+    "editor.formatOnSave": true
+}

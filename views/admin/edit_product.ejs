@@ -1,0 +1,80 @@
+<%- include('../partials/header.ejs') %>
+
+    <nav id="login">
+        <div class="card">
+
+            <% let filename %>
+                <% product.media ? filename = `/images/${product.media.filename}` : filename = product.mediaURL %>
+
+                    <h1>
+                        <% if (editing) { %> Edit
+                            <% } else { %> Add
+                                <% } %> Product</h1>
+                    <form class="" action="/admin/<% if (editing) { %>edit_product<% } else { %>add_product<% } %>" method="POST" enctype="multipart/form-data">
+                        <div>
+                            <label for="brand">Brand</label>
+                            <input type="text" name="brand" id="brand" value="<% if (editing) { %><%= product.brand %><% } %>">
+                        </div>
+                        <div>
+                            <label for="media">Media</label>
+                            <input type="file" name="media" id="media" value="<% if (editing) { %><%= filename %><% } %>">
+                        </div>
+                        <div>
+                            <label for="cost_price">Cost price</label>
+                            <input type="number" name="cost_price" id="cost_price" step="0.01" value="<% if (editing) { %><%= product.cost_price %><% } %>">
+                        </div>
+                        <div>
+                            <label for="selling_price">Selling price</label>
+                            <input type="number" name="selling_price" id="selling_price" step="0.01" value="<% if (editing) { %><%= product.selling_price %><% } %>">
+                        </div>
+                        <div>
+                            <label for="category" class="mt-2">Category</label>
+                            <select name="category" id="category" class="w-100" style="height: 45px; border-radius: 5px;" required>
+                <option value="<% if (editing) { %><%= product.category %><% } %>"><% if (editing) { %><%= product.category %><% } else { %>Choose category <% } %></option>
+                <option>Choose category</option>
+                <% categories.map((category) => { %>
+                      <option value="<%= category._id %>"><%= category.category %></option>
+                <% }) %>
+            </select>
+                        </div>
+                        <div>
+                            <label for="sub_cat" class="mt-2">Sub Category</label>
+                            <select name="sub_cat" id="sub_cat" class="w-100" style="height: 45px; border-radius: 5px;" required>
+                <option value="<% if (editing) { %><%= product.sub_cat %><% } %>"><% if (editing) { %><%= product.sub_cat %><% } else { %>Choose Sub Category <% } %></option>
+                <option>Choose Sub Category</option>
+                    <% sub_cats.map((sub_cat) => { %>
+                      <option value="<%= sub_cat._id %>"><%= sub_cat.sub_cat %></option>
+                    <% }) %>
+            </select>
+                        </div>
+                        <div>
+                            <label for="size" class="mt-2">Size</label>
+                            <select name="size" id="size" class="w-100" style="height: 45px; border-radius: 5px;" required>
+                <option value="<% if (editing) { %><%= product.size %><% } %>"><% if (editing) { %><%= product.size %><% } else { %>Choose Size <% } %></option>
+                <option value="small">small</option>
+                <option value="medium">medium</option>
+                <option value="large">large</option>
+                <option value="XL">XL</option>
+            </select>
+                        </div>
+                        <div>
+                            <label for="qty">Quantity</label>
+                            <input type="number" name="qty" id="qty" step="1" value="<% if (editing) { %><%= product.qty %><% } %>">
+                        </div>
+                        <div>
+                            <label for="description">Description</label>
+                            <textarea name="description" id="description" rows="5" class="w-100"><% if (editing) { %><%= product.description %><% } %></textarea>
+                        </div>
+
+                        <% if (editing) { %>
+                            <input type="hidden" value="<%= product.id %>" name="productId">
+                            <% } %>
+
+                                <button type="submit" class="btn btn-outline-warning"><% if (editing) { %>Update Product<% } else { %>Add Product<% } %></button>
+                                <a href="/admin/products" class="btn btn-outline-secondary">Back</a>
+                    </form>
+
+        </div>
+    </nav>
+
+    <%- include('../partials/footer.ejs') %>

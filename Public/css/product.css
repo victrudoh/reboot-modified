@@ -1,0 +1,122 @@
+
+/**** SHOP PAGE  ****/
+.cardTitle {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}
+
+.cardSubTitle {
+  text-align: center;
+  margin: 5px;
+  margin-top: 10px;
+}
+
+.grid {
+  align-items: stretch;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+/* .card {
+  align-items: center;
+  background-color: #522852;
+  border-radius: 8px;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.26);
+  color: azure;
+  display: flex;
+  flex-direction: column;
+  max-height: 500px;
+  min-height: 500px;
+  justify-content: center;
+  margin-bottom: 20px;
+  margin-top: 35px;
+  max-width: 300px;
+  min-width: 300px;
+  overflow-y: scroll;
+  text-align: center;
+} */
+
+.card__header,
+.card__content {
+  padding: 1rem;
+  /* border-bottom: 1px solid azure; */
+}
+
+.card__header h1,
+.card__content h1,
+.card__content h2,
+.card__content p {
+  margin: 0;
+}
+
+.card__image {
+  width: 100%;
+  color: red;
+}
+
+.card__image img {
+  width: 100%;
+}
+
+.card__actions {
+  padding: 1rem;
+  text-align: center;
+  background-color: azure;
+}
+
+.card__actions button,
+.card__actions a {
+  /* margin: 0 0.25rem; */
+  margin-bottom: 15px;
+}
+
+.product_stock {
+  margin-bottom: 6px;
+  margin-top: -12px;
+}
+
+.product_description {
+  margin-bottom: 10px;
+  margin-top: 3px;
+}
+
+.product_quantity {
+  border-radius: 6px;
+  margin-bottom: 5px;
+  text-align: center;
+}
+
+
+
+/* .btn {
+  font: inherit;
+  border: 1px solid #522852;
+  color: #522852;
+  background: white;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  padding: 2px 8px;
+  margin-right: 3px;
+  text-decoration: none;
+}
+
+.btn:hover,
+.btn:active {
+  background-color: salmon;
+  color: white;
+} */
+
+.btn.danger {
+  color: red;
+  border-color: red;
+}
+
+.btn.danger:hover,
+.btn.danger:active {
+  background: red;
+  color: white;
+}

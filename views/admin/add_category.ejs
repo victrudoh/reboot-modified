@@ -1,0 +1,17 @@
+<%- include('../partials/header.ejs') %>
+
+    <nav id="login" style="height: 78vh; margin-bottom: 90px; padding-top: 70px;">
+        <div class=" card ">
+            <h1>Add Category</h1>
+            <form class=" " action="/admin/createCategory" method="POST">
+                <div>
+                    <label for="category">Category</label>
+                    <input type="text" name="category" id="category" required />
+                </div>
+                <button type="submit" class="btn btn-outline-warning">Add Category</button>
+                <a href="/admin/categories" class="btn btn-outline-secondary">Back</a>
+            </form>
+        </div>
+    </nav>
+
+    <%- include('../partials/footer.ejs') %>

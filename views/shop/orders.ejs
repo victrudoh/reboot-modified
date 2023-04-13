@@ -1,0 +1,57 @@
+<%- include('../partials/header.ejs') %>
+
+<main>
+  <div class="">
+    <form action="/orders" method="POST">
+        <label for="paymentOption" class="mt-2">Sort by:</label>
+        <select name="paymentOption" id="paymentOption" class="mb-3" required>
+          <option>Choose option</option>
+          <option value="deposit">Payment option: deposit</option>
+          <option value="full">Payment option: full payment</option>
+          <!-- <option value="date">Date</option> -->
+        </select>
+      <button type="submit" class="btn btn-outline-secondary my-1">Sort</button>
+    </form>
+  </div>
+  <br />
+  <% if (orders.length <= 0) { %>
+  <h1>Nothing there!</h1>
+  <% } else { %>
+  <ul class="orders">
+    <% totalPrice = 0 %> 
+    <% orders.forEach(order => { %>
+    <li class="orders__item">
+      <div class="spaceBetween">
+        <h1>Order - # <%= order._id %></h1>
+        <%= order.createdAt %>
+      </div>
+      <ul class="orders__products">
+        <% order.products.forEach(p => { %>
+        <li class="orders__products-item">
+          <%= p.product.title %> (<%= p.quantity %>)
+          <h3>₦<%= p.product.price %></h3>
+          <% itemTotalPrice = p.product.price * p.quantity %> <% totalPrice =
+          totalPrice + itemTotalPrice %>
+        </li>
+        <% }); %>
+        Payment Option: <%= order.paymentOption %>
+        <div class="spaceBetween">
+          <h3>Total Price: ₦<%= totalPrice %></h3>
+          <!-- <a href="/invoice/<%= order._id %>" class="btn btn-outline-secondary">Generate invoice</a> -->
+          <a href="/receipt/<%= order._id %>" class="btn btn-outline-secondary">Generate receipt</a>
+        </div>
+        <% totalPrice = 0 %>
+      </ul>
+    </li>
+    <% }); %>
+  </ul>
+  <% } %>
+
+  <!-- <div class="centered">
+        <form action="/create_order" method="POST">
+          <button type="submit" class="btn">Order Now!</button>
+        </form>
+      </div> -->
+</main>
+
+<%- include('../partials/footer.ejs') %>

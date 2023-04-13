@@ -1,0 +1,55 @@
+<%- include('../partials/header.ejs') %>
+
+<main style="height: 100vh; margin-top: 74px; margin-bottom: 105px;">
+        <div class="receiptBody" id="receiptBody">
+            <small>***CUSTOMER COPY***</small>
+            <img class="d-block mx-auto" src="/images/reboot_2.0.png" alt="" width="74" height="57">
+            <small>Everything you want, all that you need</small>
+            <hr>
+            <%= order.createdAt %> <br>
+            TID: <%= order._id %> <br>
+            Payment Option: <%= order.paymentOption %> 
+            <hr>
+            <h6>Customer Details</h6>
+            username: <%= order.user.name %> <br>
+            email: <%= order.user.email %>
+            <hr>
+            <h6>Transaction Details</h6>
+            <ul>
+                <% totalPrice = 0 %> 
+                <% order.products.forEach(p => { %>
+                    <% itemTotalPrice = p.product.price * p.quantity %> 
+                    <li><%= p.product.title %> (<%= p.quantity %>) --- ₦<%= itemTotalPrice %> </li>
+                    <% totalPrice =
+                  totalPrice + itemTotalPrice %>
+                <% }); %>
+            </ul>
+            <h5>Total amount: ₦<%= totalPrice %></h5>
+            <h5><%= order.paid ? 'TRANSACTION APPROVED' : 'TRANSACTION PENDING' %> </h5>
+            <br>
+            <small>Please retain your receipt.</small><br>
+            <small>Thank You</small>
+
+        </div>
+        <br>
+
+        <!-- <a href="" title="Print" onclick="window.print();" target="_blank" style="cursor: pointer;">Print</a> -->
+        <div class="d-flex justify-content-center">
+            <button onclick="printContent('receiptBody')" class="btn btn-outline-warning">Print</button>
+            <br>
+            <br>
+        </div>
+
+        <script>
+            const printContent = (id) => {
+                let restorePage = document.body.innerHTML;
+                let printContent = document.getElementById(id).innerHTML;
+                document.body.innerHTML = printContent;
+                window.print();
+                document.body.innerHTML = printContent;
+            }
+        </script>
+
+</main>
+
+<%- include('../partials/footer.ejs') %>

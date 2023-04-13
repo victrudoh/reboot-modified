@@ -1,0 +1,193 @@
+    <%- include('../partials/header.ejs') %>
+
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/invoice.css" />
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+      integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+      crossorigin="anonymous"
+    />
+    <title><%= pageTitle %></title>
+  </head>
+  <body>
+    <header class="main-header">
+      <nav class="main-header_nav">
+        <ul class="main-header_item-list">
+          <li class="main-header_item">
+            <a class="<%= path === 'index' ? 'active' : '' %>" href="/">Shop</a>
+          </li>
+          <li class="main-header_item">
+            <a
+              class="<%= path === 'product_list' ? 'active' : '' %>"
+              href="/products"
+              >Products</a
+            >
+          </li>
+          <% if (isAuthenticated) { %>
+          <li class="main-header_item">
+            <a class="<%= path === 'cart' ? 'active' : '' %>" href="/cart"
+              >Cart</a
+            >
+          </li>
+          <li class="main-header_item">
+            <a class="<%= path === 'orders' ? 'active' : '' %>" href="/orders"
+              >Orders</a
+            >
+          </li>
+          <% if (role === 'admin') { %>
+          <li class="main-header_item">
+            <a
+              class="<%= path === 'add_product' ? 'active' : '' %>"
+              href="/admin/add_product"
+              >Add Product</a
+            >
+          </li>
+          <li class="main-header_item">
+            <a
+              class="<%= path === 'adminProduct_list' ? 'active' : '' %>"
+              href="/admin/products"
+              >Admin Products</a
+            >
+          </li>
+          <li class="main-header_item">
+              <a
+                class="<%= path === 'allOrders' ? 'active' : '' %>"
+                href="/admin/orders"
+                >All orders</a
+              >
+            </li>
+          <% } %> <% } %>
+        </ul>
+        <ul class="main-header_item-list_right">
+          <% if (!isAuthenticated) { %>
+          <li class="main-header_item_right">
+            <a class="<%= path === 'login' ? 'active' : '' %>" href="/login"
+              >Login</a
+            >
+          </li>
+          <li class="main-header_item_right">
+            <a class="<%= path === 'signup' ? 'active' : '' %>" href="/signup"
+              >Signup</a
+            >
+          </li>
+          <% } else { %>
+          <li class="main-header_item_right">
+            <form action="/logout" method="POST">
+              <button type="submit">Log Out</button>
+            </form>
+          </li>
+          <% } %>
+        </ul>
+      </nav>
+    </header> -->
+
+<main>
+      <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+      integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+      crossorigin="anonymous"
+    />
+
+    <% totalPrice = 0 %> 
+    <% orders.forEach(order => { %>
+    <div class="receipt-content">
+      <div class="container bootstrap snippets bootdey">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="invoice-wrapper">
+              <div class="intro">
+                <h1>Invoice</h1>
+              </div>
+              <div class="payment-info">
+                <div class="row">
+                  <div class="col-sm-6">
+                    <span>Transaction No.</span>
+                    <strong><%= order._id %></strong>
+                  </div>
+                  <div class="col-sm-6 text-right">
+                    <span>Transaction Date</span>
+                    <strong><%= order.createdAt %></strong>
+                  </div>
+                </div>
+              </div>
+
+              <div class="payment-details">
+                <div class="row">
+                  <div class="col-sm-6">
+                    <span>From</span>
+                    <strong>Reboot</strong>
+                    <p>
+                      Your trusted online store<br />
+                      <br />
+                      <br />
+                      <br />
+                      <a href="#"> </a>
+                    </p>
+                  </div>
+                  <div class="col-sm-6 text-right">
+                    <span>Payment To</span>
+                    <strong> <%= user.username %> </strong>
+                    <p>
+                      <%= user.physicalAddress %> <br>
+                      <a href="#"> <%= user.email %> </a>
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="line-items">
+                <div class="headers clearfix">
+                  <div class="row">
+                    <div class="col-xs-4">Description</div>
+                    <div class="col-xs-3">Quantity</div>
+                    <div class="col-xs-5 text-right">Amount</div>
+                  </div>
+                </div>
+                <% order.products.forEach(p => { %>
+                <div class="items">
+                  <div class="row item">
+                    <div class="col-xs-4 desc"><%= p.product.title %></div>
+                    <div class="col-xs-3 qty"><%= p.quantity %></div>
+                    <div class="col-xs-5 amount text-right">₦<%= p.product.price %></div>
+                  </div>
+                  <% itemTotalPrice = p.product.price * p.quantity %> <% totalPrice =
+                  totalPrice + itemTotalPrice %>
+                <% }); %>
+                <div class="total text-right">
+                  <br>
+                    <small>No discount today, our dev is lazy</small>
+                  <div class="field grand-total">
+                    Total <span>₦<%= totalPrice %></span>
+                    <% totalPrice = 0 %> 
+                  </div>
+                </div>
+
+                <div class="print">
+                  <a href="#">
+                    <i class="fa fa-print btn"></i>
+                    Print this receipt
+                  </a>
+                </div>
+              </div>
+            </div>
+            
+            <div class="footer">Copyright © 2021. GroupA company</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <% }); %>
+</main>
+
+    <%- include('../partials/footer.ejs') %>
+  <!-- </body>
+</html> -->

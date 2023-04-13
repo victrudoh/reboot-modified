@@ -1,0 +1,60 @@
+<div class="container">
+  <main>
+    <h1 class="cardTitle">SHOP</h1>
+    <div class="form-control">
+      <form action="/productsSort" method="POST">
+        <label for="category" class="mt-2">Sort by:</label>
+        <select name="category" id="category" class="mb-3" required>
+          <option>Choose category</option>
+          <option value="groceries">Groceries</option>
+          <option value="utensils">Utensils</option>
+          <option value="medical">Medical</option>
+          <option value="lifestyle">Lifestyle</option>
+          <option value="toiletries">Toiletries</option>
+        </select>
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+        <button type="submit" class="btn">Sort</button>
+      </form>
+    </div>
+    <% if (prods.length > 0) { %>
+    <div class="grid">
+      <% if (errorMessage) { %>
+              <div class="user_message user_message_error"><%= errorMessage %></div>
+      <% } %>
+      <% for (let product of prods ) { %>
+      <article class="card product-item">
+        <form action="/cart" method="POST">
+          <header class="card_header">
+            
+            <h1 class="product_title"><%= product.title %></h1>
+          </header>
+          <div class="card_image">
+            <img src="<%= product.media %>" alt="No media" />
+          </div>
+          <div class="card_content">
+            <h2 class="product_price">₦<%= product.price %></h2>
+            <h3 class="product_stock">In stock: <%= product.inStock %></h3>
+            <input type="text" name="qty" id="qty" class="product_quantity" placeholder="Quantity">
+            <!-- <p class="product_description"><%= product.description %></p> -->
+          </div>
+          <div class="card_actions">
+            <a href="/products/<%= product.id %>" class="btn">Details</a>
+            <% if (isAuthenticated) { %>
+              <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+              <button type="submit" class="btn">Add to cart</button>
+              <input type="hidden" name="productId" value="<%= product.id %>" />
+        </form>
+          <% } %>
+        </div>
+      </article>
+      <% } %>
+    </div>
+
+    
+
+
+    <% } else { %>
+    <h1>No Products in shop!</h1>
+    <% } %>
+  </main>
+</div>

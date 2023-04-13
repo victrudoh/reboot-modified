@@ -1,0 +1,27 @@
+.cashierTable {
+    border: 1px solid #522852;
+    margin: auto;
+    padding: 10px;
+    border-radius: 10px;
+    width: 95%;
+    margin-bottom: 15px;
+}
+
+.cashierTable tr {
+    border-bottom: 1px solid #522852;
+}
+
+.cashierTable th {
+    border-bottom: 1px solid #522852;
+    /* margin-bottom: 15px; */
+}
+
+.cashierTable td {
+    /* border: 1px solid #522852; */
+    text-align: center;
+    /* height: 50px; */
+    border-radius: 7px;
+    border-collapse: collapse;
+    border-bottom: 1px solid #522852;
+    padding: 5px;
+}

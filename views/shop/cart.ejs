@@ -1,0 +1,53 @@
+<%- include('../partials/header.ejs') %>
+
+<div class="container my-5">
+  <main style="height: 78vh">
+    <h1 class="center">Cart</h1>
+    <% if (products.length > 0 ) { %> <% totalPrice = 0 %>
+
+    <ul class="cart__item-list">
+      <% products.forEach(p => { %> <% title = p.productId.title %> <% price =
+      p.productId.price %> <% quantity = p.quantity %>
+
+      <li class="cart__item">
+        <h1><%= title %></h1>
+        <h2>Quantity: <%= quantity %></h2>
+        <h2>Price: <%= price %></h2>
+        <% itemTotalPrice = quantity * price %>
+        <!-- <h2>You pay: <%= itemTotalPrice %></h2> -->
+        <% totalPrice = totalPrice + itemTotalPrice %>
+        <form action="/cart_delete_item" method="POST">
+          <input type="hidden" value="<%= p.productId._id %>" name="id" />
+          <button type="submit" class="btn danger">Delete</button>
+        </form>
+      </li>
+      <% }) %>
+    </ul>
+
+    <h1 class="center">Total Price: ₦ <%= totalPrice %></h1>
+
+    <% } else { %>
+    <h1 class="centered">Cart is empty, try adding some products</h1>
+    <br />
+    <div class="centered">
+      <a href="/products" class="btn btn-outline-secondary">Go to shop</a
+      ><br /><br />
+    </div>
+    <% } %>
+
+    <hr />
+    <div class="centered">
+      <% if (products.length == 0 ) { %>
+      <form action="/create_order" method="POST">
+        <button type="submit" class="btn btn-outline-warning">Checkout</button>
+      </form>
+      <% } %>
+      <a href="/products" class="btn btn-outline-secondary mb-3">Back</a>
+      <!-- <form action="/invoice" method="POST">
+        <button type="submit" class="btn">Generate invoice</button>
+      </form> -->
+    </div>
+  </main>
+</div>
+
+<%- include('../partials/footer.ejs') %>

@@ -1,0 +1,69 @@
+<%- include('../partials/header.ejs') %>
+
+<main style="height: 78vh;">
+    <% if (errorMessage) { %>
+        <div class="user_message user_message_error my-3"><%= errorMessage %></div>
+    <% } %>
+  <div class="mx-5 my-2">
+    <form action="/cashier/orders" method="POST">
+        <label for="paymentStatus" class="mt-2">Search Id:</label>
+        <input type="text" name="orderId" id="orderId">
+      <button type="submit" class="btn btn-outline-secondary my-1">Search</button>
+    </form>
+  </div>
+  <br />
+  <% if (order.length <= 0) { %>
+  <h1>Nothing there!</h1>
+  <% } else { %>
+    <% totalPrice = 0 %> 
+    
+    <table class="table">
+      <tr>
+        <th>Order Id</th>
+        <th>Ordered by</th>
+        <!-- <th>Date Created</th> -->
+        <th>Total Price</th>
+        <th>Payment Type</th>
+        <th>Payment Status</th>
+        <th>Actions</th>
+      </tr>
+
+      <form action="/cashier/ordersPaidStatus" method="post">
+      <tr>
+        <td><%= order._id %></td>
+        <input type="hidden" value="<%= order._id %>" name="orderId">
+        <td><%= order.user.name %></td>
+        <!-- <td><%= order.createdAt %></td> -->
+        <% order.products.forEach(p => { %>
+          <% itemTotalPrice = p.product.price * p.quantity %> 
+          <% totalPrice = totalPrice + itemTotalPrice %>
+        <% }); %>
+          <td>₦<%= totalPrice %></td>
+          <td><%= order.paymentOption %></td>
+          <td>
+            <% if (!order.paid) { %>
+              <!-- <button type="submit" class="btn">Paid</button> -->
+              pending
+            <% } else { %>
+              Payment Confirmed by <%= order.cashier.username %>
+            <% } %>
+          </td>
+          <td><a href="/cashier/viewOrder/<%= order._id %>" class="btn btn-outline-warning">Update</a></td>
+    <% totalPrice = 0 %>
+      </tr>
+      </form>
+    </table>
+
+  <a href="/cashier/dashboard" class="btn btn-outline-warning">Back</a>
+
+
+  <% } %>
+
+  <!-- <div class="centered">
+        <form action="/create_order" method="POST">
+          <button type="submit" class="btn">Order Now!</button>
+        </form>
+      </div> -->
+</main>
+
+<%- include('../partials/footer.ejs') %>

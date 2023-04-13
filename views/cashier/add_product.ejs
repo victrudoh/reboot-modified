@@ -1,0 +1,46 @@
+<%- include('../partials/header.ejs') %>
+
+<nav id="login">
+  <div class="card">
+
+    <h1>Add Product</h1>
+        <form class="" action="/cashier/add_product" method="POST" enctype="multipart/form-data">
+        <div>
+            <label for="title">Title</label>
+            <input type="text" name="title" id="title">
+        </div>
+        <div>
+            <label for="media">Media</label>
+            <input type="file" name="media" id="media">
+        </div>
+        <div>
+            <label for="price">Price</label>
+            <input type="number" name="price" id="price" step="0.01">
+        </div>
+        <div>
+            <label for="category" class="mt-2">Category</label>
+            <select name="category" id="category" class="w-100" style="height: 45px; border-radius: 5px;" required>
+                <option>Choose category</option>
+                <option value="groceries">Groceries</option>
+                <option value="utensils">Utensils</option>
+                <option value="medical">Medical</option>
+                <option value="lifestyle">Lifestyle</option>
+                <option value="toiletries">Toiletries</option>
+            </select>
+        </div>
+        <div>
+            <label for="inStock">in Stock</label>
+            <input type="number" name="inStock" id="inStock" step="1">
+        </div>
+        <div>
+            <label for="description">Description</label>
+            <textarea name="description" id="description" rows="5" class="w-100"></textarea>
+        </div>
+      <button type="submit" class="btn btn-outline-warning">Add Product</button>
+      <a href="/cashier/products" class="btn btn-outline-secondary">Back</a>
+    </form>
+    
+  </div>
+</nav>
+
+<%- include('../partials/footer.ejs') %>

@@ -1,0 +1,96 @@
+<%- include('../partials/header.ejs') %>
+
+    <div class="container">
+        <main>
+            <h1 class="cardTitle fw-bolder">PRODUCTS</h1>
+            <% if (!disable) { %>
+                <div class="">
+                    <div class="d-flex w-100 justify-content-between">
+                        <form action="/admin/productsSort" method="POST">
+                            <label for="category" class="mt-2 mx-2">Sort by:</label>
+                            <select name="category" id="category" class="mb-3" required>
+          <option>Choose category</option>
+          <% categories.map((category) => { %>
+            <option value="<%= category.category %>"><%= category.category %></option>
+          <% }) %>
+        </select>
+                            <button type="submit" class="btn btn-outline-secondary my-1">Sort</button>
+                        </form>
+                        <form action="/admin/productsSubCatSort" method="POST">
+                            <label for="category" class="mt-2 mx-2">Sort by Sub Category: </label>
+                            <select name="sub_cat" id="sub_cat" class="mb-3" required>
+           <option>Choose Sub Category</option>
+            <% sub_cats.map((sub_cat) => { %>
+              <option value="<%= sub_cat.sub_cat %>"><%= sub_cat.sub_cat %></option>
+            <% }) %>
+        </select>
+                            <button type="submit" class="btn btn-outline-secondary my-1">Sort</button>
+                        </form>
+                    </div>
+                    <hr>
+                    <a href="/admin/add_product" class="btn btn-outline-secondary float-end">Add Product</a>
+                </div>
+
+                <!-- <form action="/admin/upload" method="post" enctype="multipart/form-data">
+      <input type="file" name="uploadFile" id="uploadFile" />
+      <button type="submit" class="btn btn-outline-warning">Upload</button>
+    </form> -->
+
+                <form action="/admin/uploadExcel" method="post" enctype="multipart/form-data">
+                    <div class="mx-3">
+                        <h5>Upload from Excel file</h5> <br>
+                    </div>
+                    <input class="mx-3" type="file" name="uploadExcel" id="uploadExcel" />
+                    <button type="submit" class="btn btn-outline-warning ">Add</button>
+                </form>
+                <% } %>
+
+
+
+                    <% if (prods.length > 0) { %>
+                        <div class="album py-5">
+                            <div class="container">
+                                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+                                    <% for (let product of prods ) { %>
+                                        <% let filename %>
+                                            <% product.media ? filename = `/images/${product.media.filename}` : filename = product.mediaURL %>
+                                                <div class="col">
+                                                    <div class="card shadow-sm" style="min-height: 500px; max-height: 550px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);">
+                                                        <img src="<%= filename %>" alt="No Media" class="bd-placeholder-img card-img-top p-4" width="100%" height="350">
+                                                        <div class="card-body">
+                                                            <h2>
+                                                                <%= product.brand %>
+                                                            </h2>
+                                                            <small class="text-muted"><%= product.description %></small><br>
+                                                            <small class="text-muted">₦<%= product.selling_price %></small><br/>
+                                                            <small class="text-muted">Size: <%= product.size %></small>
+                                                            <div class="d-flex justify-content-between align-items-center">
+                                                                <div class="btn-group">
+                                                                    <a href="/admin/edit_product/<%= product.id %>?edit=true" class="btn btn-outline-secondary">Edit</a>
+                                                                    <form action="/admin/disable_product" method="POST">
+                                                                        <input type="hidden" value="<%= product.id %>" name="productId">
+                                                                        <button type="submit" class="btn btn-outline-secondary mx-2"><% if (product.isDisabled) { %> Enable <% } else { %> Disable <% } %> Product</button>
+                                                                    </form>
+                                                                </div>
+
+                                                                <small class="text-muted">In stock: <%= product.qty %></small>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <% } %>
+                                </div>
+                            </div>
+                        </div>
+                        <% } else { %>
+                            <% if (disable) { %>
+                                <h1>No Disabled Product</h1>
+                                <a href="/admin/products" class="btn btn-outline-secondary">Back</a>
+                                <% } else { %>
+                                    <h1>No Products in shop!</h1>
+                                    <% } %>
+                                        <% } %>
+        </main>
+    </div>
+
+    <%- include('../partials/footer.ejs') %>

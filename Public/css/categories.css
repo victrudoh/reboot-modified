@@ -1,0 +1,14 @@
+.pair {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    justify-content: center;
+}
+
+.pair a {
+    text-decoration: none;
+    border: 1px solid grey;
+    color: black;
+    padding: .3rem .5rem;
+    border-radius: 10px;
+}

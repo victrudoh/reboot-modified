@@ -1,0 +1,35 @@
+.then((product) => {
+            (product.title = updatedTitle),
+              (product.price = updatedPrice),
+              (product.media = updatedMedia),
+              (product.category = updatedCategory),
+              (product.inStock = updatedInStock),
+              (product.description = updatedDescription);
+
+            product.save();
+          })
+          .then((result) => {
+            console.log("Updated Product");
+            res.redirect("/admin/products");
+          })
+          .catch((err) => {
+            console.log(err, "postEditProductController");
+          });
+
+
+
+
+
+          
+
+product.title = updatedTitle;
+        product.media = updatedMedia;
+        product.price = updatedPrice;
+        product.category = updatedCategory;
+        product.inStock = updatedInStock;
+        product.description = updatedDescription;
+
+        await product.save();
+
+        console.log("Updated Product");
+        res.redirect("/admin/products");
